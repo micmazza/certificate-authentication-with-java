@@ -203,29 +203,23 @@ Creating a server keystore with a public and private key (on the server)
 
     keytool -v -genkeypair -dname "CN=Server,OU=Dev,O=MyLab,C=IT" -keystore server-keystore.jks -storepass secret -keypass secret -keyalg RSA -keysize 2048 -alias server -validity 3650 -deststoretype pkcs12 -ext KeyUsage=digitalSignature,dataEncipherment,keyEncipherment,keyAgreement -ext ExtendedKeyUsage=serverAuth,clientAuth -ext SubjectAlternativeName:c=DNS:localhost,IP:$SERVER_IP
 
-
-[](Exporting certificate of the server (on the server)  )
-
-[](    keytool -v -exportcert -file server.cer -alias server -keystore server-keystore.jks -storepass secret -rfc)
-
-[](Creating the truststore for the client and import the certificate of the server (on the client)  )
-
-[](    keytool -v -importcert -file server.cer -alias server -keystore client-truststore.jks -storepass secret -noprompt)
-
+<!---
+Exporting certificate of the server (on the server)  
+keytool -v -exportcert -file server.cer -alias server -keystore server-keystore.jks -storepass secret -rfc
+Creating the truststore for the client and import the certificate of the server (on the client)  
+keytool -v -importcert -file server.cer -alias server -keystore client-truststore.jks -storepass secret -noprompt
+-->
 
 Creating client certificate (on the client)  
 
     keytool -v -genkeypair -dname "CN=Client,OU=Dev,O=MyLab,C=IT" -keystore client-keystore.jks -storepass secret -keypass secret -keyalg RSA -keysize 2048 -alias client -validity 3650 -deststoretype pkcs12 -ext KeyUsage=digitalSignature,dataEncipherment,keyEncipherment,keyAgreement -ext ExtendedKeyUsage=serverAuth,clientAuth
 
-
-[](Export certificate of the client (on the client)  )
-
-[](    keytool -v -exportcert -file client.cer -alias client -keystore client-keystore.jks -storepass secret -rfc)
-
-[](Create server truststore with certificate of the client (on the server)  )
-
-[](    keytool -v -importcert -file client.cer -alias client -keystore server-truststore.jks -storepass secret -noprompt)
-
+<!---
+Export certificate of the client (on the client)  
+keytool -v -exportcert -file client.cer -alias client -keystore client-keystore.jks -storepass secret -rfc
+Create server truststore with certificate of the client (on the server)  
+keytool -v -importcert -file client.cer -alias client -keystore server-truststore.jks -storepass secret -noprompt
+-->
 
 Creating a Certificate Authority (on the server)  
 
@@ -289,15 +283,13 @@ Trusting the Certificate Authority only importing the certificate of the Certifi
     keytool -v -importcert -file root-ca/root-ca.pem -alias root-ca -keystore server-truststore.jks -storepass secret -noprompt
 
 
-[](Remove the client and server specific certificates still present in the truststores  )
-
-[](**Client**)
-
-[](    keytool -v -delete -alias server -keystore client-truststore.jks -storepass secret)
-
-[](**Server**)
-
-[](    keytool -v -delete -alias client -keystore server-truststore.jks -storepass secret)
+<!--
+Remove the client and server specific certificates still present in the truststores  
+**Client**
+keytool -v -delete -alias server -keystore client-truststore.jks -storepass secret
+**Server**
+keytool -v -delete -alias client -keystore server-truststore.jks -storepass secret
+-->
 
 
 Run the server (first)  
